@@ -22,10 +22,11 @@ const DECREMENT = "decrement";
 const RESET = "reset";
 
 // action creators
-const increment = (value) => {
+const increment = (value, match_id) => {
     return {
         type: INCREMENT,
         payload: value,
+        match_id: match_id,
     };
 };
 
@@ -33,6 +34,7 @@ const decrement = (value) => {
     return {
         type: DECREMENT,
         payload: value,
+
     };
 };
 const reset = () => {
@@ -44,14 +46,17 @@ const reset = () => {
 // initial state
 const initialState = {
     value: parseInt(counterEl.innerHTML),
+    match_id: 1,
 };
 
 // create reducer function
 function counterReducer(state = initialState, action) {
+    c(action.match_id)
     if (action.type === INCREMENT) {
         return {
             ...state,
             value: state.value + action.payload,
+            match_id: action.match_id ? action.match_id : 1
         };
     } else if (action.type === DECREMENT) {
         return {
@@ -73,7 +78,7 @@ const store = Redux.createStore(counterReducer);
 
 const render = () => {
     const state = store.getState();
-
+    console.log(state)
     if (state.value < 0) {
         alert("Value cant be less than 0");
     } else {
@@ -141,6 +146,35 @@ const cloneNode = () => {
     document.getElementById(closeDynamic).addEventListener('click', () => {
         document.getElementById(matchDynamic).remove();
     })
+
+    let incrementElDynamicId = `increment${i}`
+    let decrementElDynamicId = `decrement${i}`
+    c(incrementElDynamicId)
+
+    const incrementDynamicElement = document.getElementById(incrementElDynamicId);
+    const decrementDynamicElement = document.getElementById(decrementElDynamicId);
+
+    c(incrementDynamicElement.value)
+
+
+
+
+    c(incrementDynamicElement.onkeydown = function(e) {
+        alert("sex")
+        if (e.key == "Enter") {
+            const value = incrementDynamicElement.value;
+            c(value)
+            store.dispatch(increment(parseInt(value ? value : 0), i));
+            e.preventDefault();
+        }
+    });
+    incrementDynamicElement.onkeydown = function(e) {
+        if (e.key == "Enter") {
+            const value = decrementDynamicElement.value;
+            store.dispatch(decrement(parseInt(value ? value : 0)));
+            e.preventDefault();
+        }
+    };
 
 
 
