@@ -5,13 +5,41 @@ const counterEl = document.getElementById("counter");
 const incrementEl = document.getElementById("increment");
 const decrementEl = document.getElementById("decrement");
 const resetBtn = document.getElementById("reset");
-const containerEl = document.getElementById('container')
-const matchEl = document.getElementById('match')
+const containerEl = document.getElementById("container");
+const matchEl = document.getElementById("match");
+
+const query = document.querySelectorAll(".match >.wrapper >.lws-matchName")[0]
+    .innerHTML;
+
+// query.forEach((userItem) => {
+//     c(userItem);
+// });
+
+c(query);
+
+let i = 0;
+const cloneNode = () => {
+    const cloneMathEl = matchEl.cloneNode(true);
+    cloneMathEl.id = "match" + ++i;
+    containerEl.appendChild(cloneMathEl);
 
 
-// const cloneDiv = matchEl.cloneNode(true);
-// cloneDiv.id = "tutpoint1";
-// containerEl.appendChild(cloneDiv);
+    const incrementInput = document.querySelectorAll("#match1 #increment")[0];
+    const decrementInput = document.querySelectorAll("#match1 #decrement")[0];
+
+    incrementInput.id = "increment" + i;
+    decrementInput.id = "decrement" + i;
+    c(incrementInput);
+    c(decrementInput);
+};
+// const cloneMathEl = matchEl.cloneNode(true);
+// cloneMathEl.id = "match1";
+// containerEl.appendChild(cloneMathEl);
+
+cloneNode();
+
+
+
 // action identifiers
 const INCREMENT = "increment";
 const DECREMENT = "decrement";
@@ -34,7 +62,6 @@ const decrement = (value) => {
 const reset = () => {
     return {
         type: RESET,
-
     };
 };
 
@@ -53,7 +80,7 @@ function counterReducer(state = initialState, action) {
     } else if (action.type === DECREMENT) {
         return {
             ...state,
-            value: (state.value - action.payload) < 0 ? 0 : (state.value - action.payload),
+            value: state.value - action.payload < 0 ? 0 : state.value - action.payload,
         };
     } else if (action.type === RESET) {
         return {
@@ -108,8 +135,8 @@ decrementEl.onkeydown = function(e) {
         e.preventDefault();
     }
 };
-resetBtn.addEventListener('click', () => {
-    incrementEl.value = ""
-    decrementEl.value = ""
+resetBtn.addEventListener("click", () => {
+    incrementEl.value = "";
+    decrementEl.value = "";
     store.dispatch(reset());
-})
+});
