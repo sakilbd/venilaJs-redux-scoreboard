@@ -7,7 +7,7 @@ const decrementEl = document.getElementById("decrement1");
 const resetBtn = document.getElementById("reset1");
 
 const matchEl = document.getElementById("match1");
-const matchTitle = document.getElementById("match-title1")
+const matchTitle = document.getElementById("match-title1");
 const containerEl = document.getElementById("container");
 const matchCreateBtn = document.getElementById("match-create-button");
 
@@ -35,7 +35,6 @@ const decrement = (value) => {
         type: DECREMENT,
         payload: value,
         match_id: match_id,
-
     };
 };
 const reset = () => {
@@ -52,17 +51,18 @@ const initialState = {
 
 // create reducer function
 function counterReducer(state = initialState, action) {
-    c(action.match_id)
+    c("aciton_match_id :" + action.match_id);
     if (action.type === INCREMENT) {
         return {
             ...state,
             value: state.value + action.payload,
-            match_id: action.match_id ? action.match_id : 1
+            match_id: action.match_id ? action.match_id : 1,
         };
     } else if (action.type === DECREMENT) {
         return {
             ...state,
             value: state.value - action.payload < 0 ? 0 : state.value - action.payload,
+            match_id: action.match_id ? action.match_id : 1,
         };
     } else if (action.type === RESET) {
         return {
@@ -79,14 +79,15 @@ const store = Redux.createStore(counterReducer);
 
 const render = () => {
     const state = store.getState();
-    console.log(state)
+    console.log(state);
     if (state.value < 0) {
         alert("Value cant be less than 0");
     } else {
-        let num = parseInt(state.match_id) - 1;
-        let counterDynamic = `counter${1}`
-        let dom = document.getElementById(counterDynamic);
-        dom.innerText = state.value.toString();
+        c('match_id ' + state.match_id)
+            // let num = parseInt(state.match_id) - 1;
+        let counterDynamic = `counter` + 1;
+        let _dom = document.getElementById(counterDynamic);
+        _dom.innerText = state.value.toString();
     }
 };
 
@@ -128,7 +129,6 @@ resetBtn.addEventListener("click", () => {
     store.dispatch(reset());
 });
 
-
 const cloneNode = () => {
     const cloneMathEl = matchEl.cloneNode(true);
     cloneMathEl.id = "match" + i;
@@ -140,48 +140,19 @@ const cloneNode = () => {
     const closeBtn = document.querySelectorAll(`#match${i} #close1`)[0];
     const matchTitle = document.querySelectorAll(`#match${i} #match-title1`)[0];
 
-
     incrementInput.id = "increment" + i;
     decrementInput.id = "decrement" + i;
     result.id = "result" + i;
     closeBtn.id = "close" + i;
-    matchTitle.id = 'match-title' + i;
+    matchTitle.id = "match-title" + i;
     var matchDynamic = `match${i}`;
     var closeDynamic = `close${i}`;
-    matchTitle.innerHTML = `Match ${i}`
-    document.getElementById(closeDynamic).addEventListener('click', () => {
+    matchTitle.innerHTML = `Match ${i}`;
+    document.getElementById(closeDynamic).addEventListener("click", () => {
         document.getElementById(matchDynamic).remove();
-    })
+    });
 
-    let incrementElDynamicId = `increment${i}`
-    let decrementElDynamicId = `decrement${i}`
-    c(incrementElDynamicId)
-
-    const incrementDynamicElement = document.getElementById(incrementElDynamicId);
-    const decrementDynamicElement = document.getElementById(decrementElDynamicId);
-
-    // c(incrementDynamicElement.value)
-
-
-
-
-    incrementDynamicElement.onkeydown = function(e) {
-
-        if (e.key == "Enter") {
-            const value = incrementDynamicElement.value;
-            // c(i)
-            store.dispatch(increment(parseInt(value ? value : 0), i));
-            e.preventDefault();
-        }
-    };
-    decrementDynamicElement.onkeydown = function(e) {
-        if (e.key == "Enter") {
-            const value = decrementDynamicElement.value;
-            store.dispatch(decrement(parseInt(value ? value : 0), i));
-            e.preventDefault();
-        }
-    };
-    c(i)
+    dynamicActionWithId(i);
     i++;
 
     // c(incrementInput);
@@ -224,11 +195,41 @@ const cloneNode = () => {
 // cloneMathEl.id = "match1";
 // containerEl.appendChild(cloneMathEl);
 
+const dynamicActionWithId = (idx) => {
+    for (let i = 2; i <= idx; i++) {
+        let incrementElDynamicId = `increment${i}`;
+        let decrementElDynamicId = `decrement${i}`;
+        c(incrementElDynamicId);
+
+        const incrementDynamicElement =
+            document.getElementById(incrementElDynamicId);
+        const decrementDynamicElement =
+            document.getElementById(decrementElDynamicId);
+
+        // c(incrementDynamicElement.value)
+
+        incrementDynamicElement.onkeydown = function(e) {
+            if (e.key == "Enter") {
+                const value = incrementDynamicElement.value;
+                // c(i)
+                store.dispatch(increment(parseInt(value ? value : 0), i));
+                e.preventDefault();
+            }
+        };
+        decrementDynamicElement.onkeydown = function(e) {
+            if (e.key == "Enter") {
+                const value = decrementDynamicElement.value;
+                store.dispatch(decrement(parseInt(value ? value : 0), i));
+                e.preventDefault();
+            }
+        };
+    }
+};
+
 matchCreateBtn.addEventListener("click", () => {
     cloneNode();
-
 });
 
-document.getElementById('close1').addEventListener('click', () => {
-    document.getElementById('match1').remove();
-})
+document.getElementById("close1").addEventListener("click", () => {
+    document.getElementById("match1").remove();
+});
