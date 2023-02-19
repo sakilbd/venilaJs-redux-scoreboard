@@ -4,10 +4,12 @@ const c = console.log.bind(console);
 const counterEl = document.getElementById("counter");
 const incrementEl = document.getElementById("increment");
 const decrementEl = document.getElementById("decrement");
+const resetBtn = document.getElementById("reset");
 
 // action identifiers
 const INCREMENT = "increment";
 const DECREMENT = "decrement";
+const RESET = "reset";
 
 // action creators
 const increment = (value) => {
@@ -21,6 +23,12 @@ const decrement = (value) => {
     return {
         type: DECREMENT,
         payload: value,
+    };
+};
+const reset = () => {
+    return {
+        type: RESET,
+
     };
 };
 
@@ -40,6 +48,11 @@ function counterReducer(state = initialState, action) {
         return {
             ...state,
             value: state.value - action.payload,
+        };
+    } else if (action.type === RESET) {
+        return {
+            ...state,
+            value: 0,
         };
     } else {
         return state;
@@ -89,3 +102,8 @@ decrementEl.onkeydown = function(e) {
         e.preventDefault();
     }
 };
+resetBtn.addEventListener('click', () => {
+    incrementEl.value = ""
+    decrementEl.value = ""
+    store.dispatch(reset());
+})
