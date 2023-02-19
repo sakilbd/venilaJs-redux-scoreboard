@@ -7,6 +7,7 @@ const decrementEl = document.getElementById("decrement1");
 const resetBtn = document.getElementById("reset1");
 
 const matchEl = document.getElementById("match1");
+const matchTitle = document.getElementById("match-title1")
 const containerEl = document.getElementById("container");
 const matchCreateBtn = document.getElementById("match-create-button");
 
@@ -126,11 +127,23 @@ const cloneNode = () => {
     const decrementInput = document.querySelectorAll(`#match${i} #decrement1`)[0];
     const result = document.querySelectorAll(`#match${i} #counter1`)[0];
     const closeBtn = document.querySelectorAll(`#match${i} #close1`)[0];
+    const matchTitle = document.querySelectorAll(`#match${i} #match-title1`)[0];
+
 
     incrementInput.id = "increment" + i;
     decrementInput.id = "decrement" + i;
     result.id = "result" + i;
     closeBtn.id = "close" + i;
+    matchTitle.id = 'match-title' + i;
+    var matchDynamic = `match${i}`;
+    var closeDynamic = `close${i}`;
+    matchTitle.innerHTML = `Match ${i}`
+    document.getElementById(closeDynamic).addEventListener('click', () => {
+        document.getElementById(matchDynamic).remove();
+    })
+
+
+
     // c(incrementInput);
     // c(decrementInput);
     // c(result);
@@ -175,3 +188,7 @@ matchCreateBtn.addEventListener("click", () => {
     cloneNode();
     ++i;
 });
+
+document.getElementById('close1').addEventListener('click', () => {
+    document.getElementById('match1').remove();
+})
