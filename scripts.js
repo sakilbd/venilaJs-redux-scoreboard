@@ -47,7 +47,7 @@ function counterReducer(state = initialState, action) {
     } else if (action.type === DECREMENT) {
         return {
             ...state,
-            value: state.value - action.payload,
+            value: (state.value - action.payload) < 0 ? 0 : (state.value - action.payload),
         };
     } else if (action.type === RESET) {
         return {
