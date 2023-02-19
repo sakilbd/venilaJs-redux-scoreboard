@@ -34,6 +34,7 @@ const decrement = (value) => {
     return {
         type: DECREMENT,
         payload: value,
+        match_id: match_id,
 
     };
 };
@@ -82,7 +83,10 @@ const render = () => {
     if (state.value < 0) {
         alert("Value cant be less than 0");
     } else {
-        counterEl.innerText = state.value.toString();
+        let num = parseInt(state.match_id) - 1;
+        let counterDynamic = `counter${1}`
+        let dom = document.getElementById(counterDynamic);
+        dom.innerText = state.value.toString();
     }
 };
 
@@ -102,17 +106,19 @@ store.subscribe(render);
 // incrementEl.onchange = function(e) {
 //     store.dispatch(increment(3));
 // }
+
+let i = 2;
 incrementEl.onkeydown = function(e) {
     if (e.key == "Enter") {
         const value = incrementEl.value;
-        store.dispatch(increment(parseInt(value ? value : 0)));
+        store.dispatch(increment(parseInt(value ? value : 0), i));
         e.preventDefault();
     }
 };
 decrementEl.onkeydown = function(e) {
     if (e.key == "Enter") {
         const value = decrementEl.value;
-        store.dispatch(decrement(parseInt(value ? value : 0)));
+        store.dispatch(decrement(parseInt(value ? value : 0), i));
         e.preventDefault();
     }
 };
@@ -122,7 +128,7 @@ resetBtn.addEventListener("click", () => {
     store.dispatch(reset());
 });
 
-let i = 2;
+
 const cloneNode = () => {
     const cloneMathEl = matchEl.cloneNode(true);
     cloneMathEl.id = "match" + i;
@@ -154,29 +160,29 @@ const cloneNode = () => {
     const incrementDynamicElement = document.getElementById(incrementElDynamicId);
     const decrementDynamicElement = document.getElementById(decrementElDynamicId);
 
-    c(incrementDynamicElement.value)
+    // c(incrementDynamicElement.value)
 
 
 
 
-    c(incrementDynamicElement.onkeydown = function(e) {
-        alert("sex")
+    incrementDynamicElement.onkeydown = function(e) {
+
         if (e.key == "Enter") {
             const value = incrementDynamicElement.value;
-            c(value)
+            // c(i)
             store.dispatch(increment(parseInt(value ? value : 0), i));
             e.preventDefault();
         }
-    });
-    incrementDynamicElement.onkeydown = function(e) {
+    };
+    decrementDynamicElement.onkeydown = function(e) {
         if (e.key == "Enter") {
             const value = decrementDynamicElement.value;
-            store.dispatch(decrement(parseInt(value ? value : 0)));
+            store.dispatch(decrement(parseInt(value ? value : 0), i));
             e.preventDefault();
         }
     };
-
-
+    c(i)
+    i++;
 
     // c(incrementInput);
     // c(decrementInput);
@@ -220,7 +226,7 @@ const cloneNode = () => {
 
 matchCreateBtn.addEventListener("click", () => {
     cloneNode();
-    ++i;
+
 });
 
 document.getElementById('close1').addEventListener('click', () => {
