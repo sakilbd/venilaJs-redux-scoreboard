@@ -5,7 +5,13 @@ const counterEl = document.getElementById("counter");
 const incrementEl = document.getElementById("increment");
 const decrementEl = document.getElementById("decrement");
 const resetBtn = document.getElementById("reset");
+const containerEl = document.getElementById('container')
+const matchEl = document.getElementById('match')
 
+
+// const cloneDiv = matchEl.cloneNode(true);
+// cloneDiv.id = "tutpoint1";
+// containerEl.appendChild(cloneDiv);
 // action identifiers
 const INCREMENT = "increment";
 const DECREMENT = "decrement";
