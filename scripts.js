@@ -48,7 +48,7 @@ let currentNodeId = 1;
 let existingIdArray = []
     // initial state
 const initialState = {
-    value: parseInt(counterEl.innerHTML),
+    value: 0,
     match_id: 1,
 };
 
