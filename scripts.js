@@ -43,10 +43,10 @@ const reset = () => {
     };
 };
 
-
 let i = 2;
 let currentNodeId = 1;
-// initial state
+let existingIdArray = []
+    // initial state
 const initialState = {
     value: parseInt(counterEl.innerHTML),
     match_id: 1,
@@ -86,8 +86,8 @@ const render = () => {
     if (state.value < 0) {
         alert("Value cant be less than 0");
     } else {
-        c('match_id ' + state.match_id)
-            // let num = parseInt(state.match_id) - 1;
+        c("match_id " + state.match_id);
+        // let num = parseInt(state.match_id) - 1;
         let counterDynamic = `counter` + currentNodeId;
         let _dom = document.getElementById(counterDynamic);
         _dom.innerText = state.value.toString();
@@ -110,7 +110,6 @@ store.subscribe(render);
 // incrementEl.onchange = function(e) {
 //     store.dispatch(increment(3));
 // }
-
 
 incrementEl.onkeydown = function(e) {
     if (e.key == "Enter") {
@@ -201,6 +200,7 @@ const cloneNode = () => {
 // containerEl.appendChild(cloneMathEl);
 
 const dynamicActionWithId = (idx) => {
+    let tempIdArr = []
     for (let i = 2; i <= idx; i++) {
         let incrementElDynamicId = `increment${i}`;
         let decrementElDynamicId = `decrement${i}`;
@@ -212,28 +212,33 @@ const dynamicActionWithId = (idx) => {
             document.getElementById(decrementElDynamicId);
 
         // c(incrementDynamicElement.value)
-
-        incrementDynamicElement.onkeydown = function(e) {
-            if (e.key == "Enter") {
-                currentNodeId = i;
-                const value = incrementDynamicElement.value;
-                // c(i)
-                store.dispatch(increment(parseInt(value ? value : 0), i));
-                e.preventDefault();
-            }
-        };
-        decrementDynamicElement.onkeydown = function(e) {
-            if (e.key == "Enter") {
-                currentNodeId = i;
-                const value = decrementDynamicElement.value;
-                store.dispatch(decrement(parseInt(value ? value : 0), i));
-                e.preventDefault();
-            }
-        };
+        if (incrementDynamicElement) {
+            tempIdArr.push(i)
+            incrementDynamicElement.onkeydown = function(e) {
+                if (e.key == "Enter") {
+                    currentNodeId = i;
+                    const value = incrementDynamicElement.value;
+                    // c(i)
+                    store.dispatch(increment(parseInt(value ? value : 0), i));
+                    e.preventDefault();
+                }
+            };
+            decrementDynamicElement.onkeydown = function(e) {
+                if (e.key == "Enter") {
+                    currentNodeId = i;
+                    const value = decrementDynamicElement.value;
+                    store.dispatch(decrement(parseInt(value ? value : 0), i));
+                    e.preventDefault();
+                }
+            };
+        }
+        existingIdArray = [];
+        existingIdArray = [...tempIdArr];
     }
 };
 
 matchCreateBtn.addEventListener("click", () => {
+    c(existingIdArray)
     cloneNode();
 });
 
