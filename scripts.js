@@ -68,6 +68,19 @@ function counterReducer(state = initialState, action) {
             match_id: action.match_id ? action.match_id : 1,
         };
     } else if (action.type === RESET) {
+
+        for (let idx = 1; idx < i; idx++) {
+            let resetCounterId = 'counter' + idx;
+            let incrementId = 'increment' + idx;
+            let decremenId = 'decrement' + idx;
+            let resetCounterDom = document.getElementById(resetCounterId);
+            if (resetCounterDom) {
+                resetCounterDom.innerText = 0;
+                document.getElementById(incrementId).value = ""
+                document.getElementById(decremenId).value = ""
+
+            }
+        }
         return {
             ...state,
             value: 0,
