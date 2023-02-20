@@ -30,7 +30,7 @@ const increment = (value, match_id) => {
     };
 };
 
-const decrement = (value) => {
+const decrement = (value, match_id) => {
     return {
         type: DECREMENT,
         payload: value,
@@ -43,6 +43,9 @@ const reset = () => {
     };
 };
 
+
+let i = 2;
+let currentNodeId = 1;
 // initial state
 const initialState = {
     value: parseInt(counterEl.innerHTML),
@@ -85,7 +88,7 @@ const render = () => {
     } else {
         c('match_id ' + state.match_id)
             // let num = parseInt(state.match_id) - 1;
-        let counterDynamic = `counter` + 1;
+        let counterDynamic = `counter` + currentNodeId;
         let _dom = document.getElementById(counterDynamic);
         _dom.innerText = state.value.toString();
     }
@@ -108,9 +111,10 @@ store.subscribe(render);
 //     store.dispatch(increment(3));
 // }
 
-let i = 2;
+
 incrementEl.onkeydown = function(e) {
     if (e.key == "Enter") {
+        currentNodeId = 1;
         const value = incrementEl.value;
         store.dispatch(increment(parseInt(value ? value : 0), i));
         e.preventDefault();
@@ -118,8 +122,9 @@ incrementEl.onkeydown = function(e) {
 };
 decrementEl.onkeydown = function(e) {
     if (e.key == "Enter") {
+        currentNodeId = 1;
         const value = decrementEl.value;
-        store.dispatch(decrement(parseInt(value ? value : 0), i));
+        store.dispatch(decrement(parseInt(value ? value : 0), 3));
         e.preventDefault();
     }
 };
@@ -142,7 +147,7 @@ const cloneNode = () => {
 
     incrementInput.id = "increment" + i;
     decrementInput.id = "decrement" + i;
-    result.id = "result" + i;
+    result.id = "counter" + i;
     closeBtn.id = "close" + i;
     matchTitle.id = "match-title" + i;
     var matchDynamic = `match${i}`;
@@ -210,6 +215,7 @@ const dynamicActionWithId = (idx) => {
 
         incrementDynamicElement.onkeydown = function(e) {
             if (e.key == "Enter") {
+                currentNodeId = i;
                 const value = incrementDynamicElement.value;
                 // c(i)
                 store.dispatch(increment(parseInt(value ? value : 0), i));
@@ -218,6 +224,7 @@ const dynamicActionWithId = (idx) => {
         };
         decrementDynamicElement.onkeydown = function(e) {
             if (e.key == "Enter") {
+                currentNodeId = i;
                 const value = decrementDynamicElement.value;
                 store.dispatch(decrement(parseInt(value ? value : 0), i));
                 e.preventDefault();
