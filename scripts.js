@@ -169,49 +169,17 @@ const cloneNode = () => {
         document.getElementById(matchDynamic).remove();
     });
 
+    let [incrementDynacmicId, decrementDynamicId, counterDynamicId] = [`increment${i}`, `decrement${i}`, `counter${i}`]
+
+    document.getElementById(incrementDynacmicId).value = '';
+    document.getElementById(decrementDynamicId).value = '';
+    document.getElementById(counterDynamicId).innerText = 0;
+
     dynamicActionWithId(i);
     i++;
 
-    // c(incrementInput);
-    // c(decrementInput);
-    // c(result);
-    // c(closeBtn);
-    // for (let idx = 1; idx <= i; idx++) {
-    //     window["counterEl_" + idx] = document.getElementById(`counter${idx}`);
-    //     window["incrementEl_" + idx] = document.getElementById(`increment${idx}`);
-    //     window["decrementEl_" + idx] = document.getElementById(`decrement${idx}`);
-    //     window["resetBtn_" + idx] = document.getElementById(`reset${idx}`);
-    //     window["matchEl_" + idx] = document.getElementById(`match${idx}`);
 
-    //     let incrementDynamicId = `incrementEl_${i}`;
-    //     let decrementDynamicID = `decrementEl_${i}`;
-    //     // let resetDynamicId = `resetBtn_${i}`;
-    //     incrementDynamicId.onkeydown = function(e) {
-    //         if (e.key == "Enter") {
-    //             const value = incrementDynamicId.value;
-    //             store.dispatch(increment(parseInt(value ? value : 0)));
-    //             e.preventDefault();
-    //         }
-    //     };
-    //     decrementDynamicID.onkeydown = function(e) {
-    //         if (e.key == "Enter") {
-    //             const value = decrementDynamicID.value;
-    //             store.dispatch(decrement(parseInt(value ? value : 0)));
-    //             e.preventDefault();
-    //         }
-    //     };
-    // }
-
-    // resetDynamicId.addEventListener("click", () => {
-    //     incrementDynamicId.value = "";
-    //     decrementDynamicID.value = "";
-    //     store.dispatch(reset());
-    // });
 };
-// const cloneMathEl = matchEl.cloneNode(true);
-// cloneMathEl.id = "match1";
-// containerEl.appendChild(cloneMathEl);
-
 const dynamicActionWithId = (idx) => {
     let tempIdArr = []
     for (let i = 2; i <= idx; i++) {
