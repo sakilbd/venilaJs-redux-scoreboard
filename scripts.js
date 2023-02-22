@@ -61,10 +61,10 @@ const initialState = {
 
 // create reducer function
 function counterReducer(state = initialState, action) {
-    c("aciton_match_id :" + action.match_id);
+    // c("aciton_match_id :" + action.match_id);
     if (action.type === INCREMENT) {
-        c("dynamicObject : " + state.dynamicObject[action.match_id])
-        c("payload : " + action.payload)
+        // c("dynamicObject : " + state.dynamicObject[action.match_id])
+        // c("payload : " + action.payload)
         return {
             ...state,
             value: state.value + action.payload,
@@ -122,16 +122,14 @@ const store = Redux.createStore(counterReducer);
 const render = () => {
     const state = store.getState();
     // console.log(JSON.stringify(state.dynamicObject));
-    if (state.value < 0) {
-        alert("Value cant be less than 0");
-    } else {
-        c("match_id " + state.match_id);
 
-        let counterDynamic = `counter` + currentNodeId;
-        let _dom = document.getElementById(counterDynamic);
-        // _dom.innerText = state.value.toString();
-        _dom.innerText = state.dynamicObject[currentNodeId] ? state.dynamicObject[currentNodeId] : 0;
-    }
+    // c("match_id " + state.match_id);
+
+    let counterDynamic = `counter` + currentNodeId;
+    let _dom = document.getElementById(counterDynamic);
+    // _dom.innerText = state.value.toString();
+    _dom.innerText = state.dynamicObject[currentNodeId] ? state.dynamicObject[currentNodeId] : 0;
+
 };
 
 // update UI initially
@@ -215,7 +213,7 @@ const dynamicActionWithId = (idx) => {
                 if (e.key == "Enter") {
                     currentNodeId = j;
 
-                    c("j : " + j)
+                    // c("j : " + j)
                     const value = incrementDynamicElement.value;
                     // c(i)
                     store.dispatch(increment(parseInt(value ? value : 0), j));
