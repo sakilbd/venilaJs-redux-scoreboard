@@ -27,9 +27,7 @@ const increment = (value, match_id) => {
         type: INCREMENT,
         payload: value,
         match_id: match_id,
-        obj: {
-            [match_id]: value
-        }
+
     };
 };
 
@@ -70,12 +68,16 @@ const initialState = {
 function counterReducer(state = initialState, action) {
     c("aciton_match_id :" + action.match_id);
     if (action.type === INCREMENT) {
+        c("dynamicObject : " + state.dynamicObject[action.match_id])
+        c("payload : " + action.payload)
         return {
             ...state,
             value: state.value + action.payload,
             dynamicObject: {
                 ...state.dynamicObject,
-                [action.match_id]: state.dynamicObject[action.match_id] + action.payload
+                [action.match_id]: state.dynamicObject[action.match_id] ? state.dynamicObject[action.match_id] + action.payload : action.payload,
+                // [action.match_id]: action.payload
+
             },
             match_id: action.match_id ? action.match_id : 1,
             // dynamicObject: [dynamicObject, ...action.obj]
@@ -194,11 +196,12 @@ const cloneNode = () => {
     document.getElementById(decrementDynamicId).value = '';
     document.getElementById(counterDynamicId).innerText = 0;
 
-    initialState.dynamicObject[i] = 0;
+    // initialState.dynamicObject[i] = 0;
     c(JSON.stringify(initialState.dynamicObject));
 
     dynamicActionWithId(i);
     i++;
+
 
 
 };
@@ -207,7 +210,7 @@ const dynamicActionWithId = (idx) => {
     for (let j = 2; j <= idx; j++) {
         let incrementElDynamicId = `increment${j}`;
         let decrementElDynamicId = `decrement${j}`;
-        c(incrementElDynamicId);
+        // c(incrementElDynamicId);
 
         const incrementDynamicElement =
             document.getElementById(incrementElDynamicId);
@@ -220,6 +223,8 @@ const dynamicActionWithId = (idx) => {
             incrementDynamicElement.onkeydown = function(e) {
                 if (e.key == "Enter") {
                     currentNodeId = j;
+
+                    c("j : " + j)
                     const value = incrementDynamicElement.value;
                     // c(i)
                     store.dispatch(increment(parseInt(value ? value : 0), j));
