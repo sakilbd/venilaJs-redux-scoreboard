@@ -27,6 +27,9 @@ const increment = (value, match_id) => {
         type: INCREMENT,
         payload: value,
         match_id: match_id,
+        obj: {
+            [match_id]: value
+        }
     };
 };
 
@@ -46,11 +49,22 @@ const reset = () => {
 let i = 2;
 let currentNodeId = 1;
 let existingIdArray = []
-    // initial state
+
+const createObject = (matchid) => {
+    return {
+        [matchid]: 0
+
+    }
+}
+
+// initial state
 const initialState = {
     value: 0,
     match_id: 1,
+    dynamicObject: { 1: 0 }
 };
+
+
 
 // create reducer function
 function counterReducer(state = initialState, action) {
@@ -59,7 +73,12 @@ function counterReducer(state = initialState, action) {
         return {
             ...state,
             value: state.value + action.payload,
+            dynamicObject: {
+                ...state.dynamicObject,
+                [action.match_id]: state.dynamicObject[action.match_id] + action.payload
+            },
             match_id: action.match_id ? action.match_id : 1,
+            // dynamicObject: [dynamicObject, ...action.obj]
         };
     } else if (action.type === DECREMENT) {
         return {
@@ -95,7 +114,7 @@ const store = Redux.createStore(counterReducer);
 
 const render = () => {
     const state = store.getState();
-    console.log(state);
+    console.log(JSON.stringify(state.dynamicObject));
     if (state.value < 0) {
         alert("Value cant be less than 0");
     } else {
@@ -128,7 +147,7 @@ incrementEl.onkeydown = function(e) {
     if (e.key == "Enter") {
         currentNodeId = 1;
         const value = incrementEl.value;
-        store.dispatch(increment(parseInt(value ? value : 0), i));
+        store.dispatch(increment(parseInt(value ? value : 0), 1));
         e.preventDefault();
     }
 };
@@ -136,7 +155,7 @@ decrementEl.onkeydown = function(e) {
     if (e.key == "Enter") {
         currentNodeId = 1;
         const value = decrementEl.value;
-        store.dispatch(decrement(parseInt(value ? value : 0), 3));
+        store.dispatch(decrement(parseInt(value ? value : 0), 1));
         e.preventDefault();
     }
 };
@@ -169,54 +188,25 @@ const cloneNode = () => {
         document.getElementById(matchDynamic).remove();
     });
 
+    let [incrementDynacmicId, decrementDynamicId, counterDynamicId] = [`increment${i}`, `decrement${i}`, `counter${i}`]
+
+    document.getElementById(incrementDynacmicId).value = '';
+    document.getElementById(decrementDynamicId).value = '';
+    document.getElementById(counterDynamicId).innerText = 0;
+
+    initialState.dynamicObject[i] = 0;
+    c(JSON.stringify(initialState.dynamicObject));
+
     dynamicActionWithId(i);
     i++;
 
-    // c(incrementInput);
-    // c(decrementInput);
-    // c(result);
-    // c(closeBtn);
-    // for (let idx = 1; idx <= i; idx++) {
-    //     window["counterEl_" + idx] = document.getElementById(`counter${idx}`);
-    //     window["incrementEl_" + idx] = document.getElementById(`increment${idx}`);
-    //     window["decrementEl_" + idx] = document.getElementById(`decrement${idx}`);
-    //     window["resetBtn_" + idx] = document.getElementById(`reset${idx}`);
-    //     window["matchEl_" + idx] = document.getElementById(`match${idx}`);
 
-    //     let incrementDynamicId = `incrementEl_${i}`;
-    //     let decrementDynamicID = `decrementEl_${i}`;
-    //     // let resetDynamicId = `resetBtn_${i}`;
-    //     incrementDynamicId.onkeydown = function(e) {
-    //         if (e.key == "Enter") {
-    //             const value = incrementDynamicId.value;
-    //             store.dispatch(increment(parseInt(value ? value : 0)));
-    //             e.preventDefault();
-    //         }
-    //     };
-    //     decrementDynamicID.onkeydown = function(e) {
-    //         if (e.key == "Enter") {
-    //             const value = decrementDynamicID.value;
-    //             store.dispatch(decrement(parseInt(value ? value : 0)));
-    //             e.preventDefault();
-    //         }
-    //     };
-    // }
-
-    // resetDynamicId.addEventListener("click", () => {
-    //     incrementDynamicId.value = "";
-    //     decrementDynamicID.value = "";
-    //     store.dispatch(reset());
-    // });
 };
-// const cloneMathEl = matchEl.cloneNode(true);
-// cloneMathEl.id = "match1";
-// containerEl.appendChild(cloneMathEl);
-
 const dynamicActionWithId = (idx) => {
     let tempIdArr = []
-    for (let i = 2; i <= idx; i++) {
-        let incrementElDynamicId = `increment${i}`;
-        let decrementElDynamicId = `decrement${i}`;
+    for (let j = 2; j <= idx; j++) {
+        let incrementElDynamicId = `increment${j}`;
+        let decrementElDynamicId = `decrement${j}`;
         c(incrementElDynamicId);
 
         const incrementDynamicElement =
@@ -226,31 +216,32 @@ const dynamicActionWithId = (idx) => {
 
         // c(incrementDynamicElement.value)
         if (incrementDynamicElement) {
-            tempIdArr.push(i)
+            tempIdArr.push(j)
             incrementDynamicElement.onkeydown = function(e) {
                 if (e.key == "Enter") {
-                    currentNodeId = i;
+                    currentNodeId = j;
                     const value = incrementDynamicElement.value;
                     // c(i)
-                    store.dispatch(increment(parseInt(value ? value : 0), i));
+                    store.dispatch(increment(parseInt(value ? value : 0), j));
                     e.preventDefault();
                 }
             };
             decrementDynamicElement.onkeydown = function(e) {
                 if (e.key == "Enter") {
-                    currentNodeId = i;
+                    currentNodeId = j;
                     const value = decrementDynamicElement.value;
-                    store.dispatch(decrement(parseInt(value ? value : 0), i));
+                    store.dispatch(decrement(parseInt(value ? value : 0), j));
                     e.preventDefault();
                 }
             };
         }
         existingIdArray = [];
-        existingIdArray = [...tempIdArr];
+        existingIdArray = [tempIdArr];
     }
 };
 
 matchCreateBtn.addEventListener("click", () => {
+    initialState.value = 0;
     c(existingIdArray)
     cloneNode();
 });
